@@ -1,5 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import { LogBox, StyleSheet, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 import Index from './src/Index';
 
