@@ -1,21 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { LogBox, StyleSheet, View } from 'react-native';
+import { RecoilRoot } from 'recoil';
+
+import Index from './src/Index';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Text>Seems to work with tunnel mode on WSL2</Text>
-      <StatusBar style="auto" />
-    </View>
+    <RecoilRoot>
+      <View style={styles.appContainer}>
+        <Index />
+        <StatusBar style="auto" />
+      </View>
+    </RecoilRoot>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  appContainer: {
+    flex: 1
   },
 });
+
+LogBox.ignoreLogs(['Duplicate atom key']);
