@@ -1,18 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { useRecoilValue } from 'recoil';
+
 import Container from './components/shared/Container';
-import { timersAsDigital } from './recoil/atoms/timer';
+import useTimer from './hooks/useTimer';
+import { millisecondsToDigital } from './utils/time';
 
 const Index = () => {
-  const [playerOneTimer, playerTwoTimer] = useRecoilValue(timersAsDigital)
+  const { time: playerOneTimer } = useTimer(180000);
+  const { time: playerTwoTimer } = useTimer(180000);
 
   return (
     <Container>
       <View style={styles.playerOne}>
-        <Text style={styles.timerText}>{playerOneTimer}</Text>
+        <Text style={styles.timerText}>{millisecondsToDigital(playerOneTimer)}</Text>
       </View>
       <View style={styles.playerTwo}>
-        <Text style={styles.timerText}>{playerTwoTimer}</Text>
+        <Text style={styles.timerText}>{millisecondsToDigital(playerTwoTimer)}</Text>
       </View>
     </Container>
   );
