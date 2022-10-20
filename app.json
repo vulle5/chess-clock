@@ -3,6 +3,7 @@
     "name": "chess-clock",
     "slug": "chess-clock",
     "version": "1.0.0",
+    "owner": "vulle",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
