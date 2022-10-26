@@ -4,11 +4,17 @@ export const millisecondsToDigital = (milliseconds: number) => {
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
-export function animationInterval(ms: number, signal: AbortSignal, callback: (time: number) => void) {
+export const millisecondsToDigitalWithMilliseconds = (milliseconds: number) => {
+  const minutes = Math.floor(milliseconds / 60000);
+  const seconds = Math.floor((milliseconds % 60000) / 1000);
+  const ms = Math.floor((milliseconds % 1000) / 100);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}.${ms}`;
+};
+
+export function animationInterval(callback: (time: number) => void, ms: number) {
   const start = performance.now();
 
   function frame(time: number) {
-    if (signal.aborted) return;
     callback(time);
     scheduleFrame(time);
   }

@@ -1,45 +1,46 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from "react-native";
 
-import Container from './components/shared/Container';
-import useTimer from './hooks/useTimer';
-import { millisecondsToDigital } from './utils/time';
+import Container from "./components/shared/Container";
+import useTimer from "./hooks/useTimer";
+import { millisecondsToDigitalWithMilliseconds } from "./utils/time";
 
 const Index = () => {
-  const { time: playerOneTimer } = useTimer(180000);
-  const { time: playerTwoTimer } = useTimer(180000);
+  const { time, start, stop, pause, resume } = useTimer(180000);
 
   return (
     <Container>
       <View style={styles.playerOne}>
-        <Text style={styles.timerText}>{millisecondsToDigital(playerOneTimer)}</Text>
+        <Text style={styles.timerText}>
+          {millisecondsToDigitalWithMilliseconds(time)}
+        </Text>
       </View>
-      <View style={styles.playerTwo}>
-        <Text style={styles.timerText}>{millisecondsToDigital(playerTwoTimer)}</Text>
-      </View>
+      <Button title="Start" onPress={() => start()} />
+      <Button title="Pause" onPress={() => pause()} />
+      <Button title="Resume" onPress={() => resume()} />
+      <Button title="Stop" onPress={() => stop()} />
     </Container>
   );
-}
+};
 
 const styles = StyleSheet.create({
   playerOne: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: "red",
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   playerTwo: {
     flex: 1,
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   timerText: {
     fontSize: 100,
-    color: 'white'
-  }
+    color: "white",
+  },
 });
-
 
 export default Index;

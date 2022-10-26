@@ -1,21 +1,47 @@
-import { useEffect, useState } from "react";
-
+import { useState, useEffect, useRef } from "react";
+import { Timer } from "timer-node";
 import { animationInterval } from "../utils/time";
 
-const controller = new AbortController();
-
+/**
+ * Timer hook that ticks every 100ms
+ * @param initialTime the initial time in milliseconds
+ * @returns current time and functions to control the timer
+ */
 const useTimer = (initialTime: number) => {
+  const { current: timer } = useRef(new Timer());
+  const timerSubscription = useRef<NodeJS.Timeout | undefined>();
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    const subscription = animationInterval(1000, controller.signal, () => {
-      setTime((prevTime) => prevTime - 1000);
-    });
+    return () => stop();
+  }, []);
 
-    return () => clearTimeout(subscription);
-  }, [])
+  const start = () => {
+    const subscription = animationInterval(() => {
+      if (timer.isRunning()) {
+        setTime(initialTime - timer.ms()); 
+      }
+    }, 100);
+    if (timerSubscription?.current) {
+      timerSubscription.current = subscription;
+    }
+    timer.start()
+  };
 
-  return { time, stop: () => controller.abort() };
-}
+  const stop = () => {
+    if (timerSubscription?.current) {
+      clearTimeout(timerSubscription.current);
+    }
+    timer.stop()
+  };
+
+  return {
+    time,
+    stop,
+    start,
+    pause: () => timer.pause(),
+    resume: () => timer.resume()
+  };
+};
 
 export default useTimer;
