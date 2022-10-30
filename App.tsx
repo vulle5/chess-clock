@@ -1,4 +1,4 @@
-import { LogBox, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 import Index from './src/Index';
@@ -17,5 +17,3 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
-
-LogBox.ignoreLogs(['Duplicate atom key']);

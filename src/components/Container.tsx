@@ -1,8 +1,8 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ViewProps } from 'react-native';
 
-const Container: React.FC<ContainerProps> = ({ children }) => {
+const Container: React.FC<ContainerProps> = ({ children, styles: asStyle }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, asStyle]}>
       {children}
     </View>
   );
@@ -10,6 +10,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 
 interface ContainerProps {
   children: React.ReactNode;
+  styles?: ViewProps['style'];
 }
 
 const styles = StyleSheet.create({
