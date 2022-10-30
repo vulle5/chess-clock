@@ -1,8 +1,8 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 
-import Container from "./components/shared/Container";
-import useTimer from "./hooks/useTimer";
-import { millisecondsToDigitalWithMilliseconds } from "./utils/time";
+import Container from "@components/Container";
+import useTimer from "@hooks/useTimer";
+import { millisecondsToDigitalWithMilliseconds } from "@utils/time";
 
 const Index = () => {
   const { time, start, stop, pause, resume } = useTimer(180000);
