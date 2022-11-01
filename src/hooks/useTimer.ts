@@ -4,10 +4,8 @@ import { animationInterval } from "../utils/time";
 
 /**
  * Timer hook that ticks every 100ms
- * @param initialTime the initial time in milliseconds
- * @returns current time and functions to control the timer
  */
-const useTimer = ({ initialTime }: TimerProps): Timer => {
+const useTimer = ({ initialTime, onTimerEnd }: TimerProps): Timer => {
   const { current: timer } = useRef(new NodeTimer());
   const timerSubscription = useRef<NodeJS.Timeout | undefined>();
   const [time, setTime] = useState(initialTime);
@@ -18,10 +16,17 @@ const useTimer = ({ initialTime }: TimerProps): Timer => {
 
   const start = () => {
     const subscription = animationInterval(() => {
-      const currentTime = timer.ms();
+      const currentTime = initialTime - timer.ms();
+
+      if (currentTime <= 0) {
+        stop();
+        setTime(0);
+        onTimerEnd?.();
+        return;
+      }
 
       if (timer.isRunning()) {
-        setTime(initialTime - currentTime); 
+        setTime(currentTime); 
       }
     }, 100);
     if (timerSubscription?.current) {
@@ -52,6 +57,7 @@ const useTimer = ({ initialTime }: TimerProps): Timer => {
 
 export interface TimerProps {
   initialTime: number;
+  onTimerEnd?: () => void;
 }
 
 export interface Timer {
