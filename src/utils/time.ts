@@ -5,10 +5,9 @@ export const millisecondsToDigital = (milliseconds: number) => {
 };
 
 export const millisecondsToDigitalWithMilliseconds = (milliseconds: number) => {
-  const minutes = Math.floor(milliseconds / 60000);
   const seconds = Math.floor((milliseconds % 60000) / 1000);
   const ms = Math.floor((milliseconds % 1000) / 100);
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}.${ms}`;
+  return `${seconds < 10 ? '0' : ''}${seconds}.${ms}`;
 };
 
 export function animationInterval(callback: (time: number) => void, ms: number) {
