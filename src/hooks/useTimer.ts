@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Timer } from "timer-node";
+import { Timer as NodeTimer } from "timer-node";
 import { animationInterval } from "../utils/time";
 
 /**
@@ -7,8 +7,8 @@ import { animationInterval } from "../utils/time";
  * @param initialTime the initial time in milliseconds
  * @returns current time and functions to control the timer
  */
-const useTimer = (initialTime: number) => {
-  const { current: timer } = useRef(new Timer());
+const useTimer = ({ initialTime }: TimerProps): Timer => {
+  const { current: timer } = useRef(new NodeTimer());
   const timerSubscription = useRef<NodeJS.Timeout | undefined>();
   const [time, setTime] = useState(initialTime);
 
@@ -18,8 +18,10 @@ const useTimer = (initialTime: number) => {
 
   const start = () => {
     const subscription = animationInterval(() => {
+      const currentTime = timer.ms();
+
       if (timer.isRunning()) {
-        setTime(initialTime - timer.ms()); 
+        setTime(initialTime - currentTime); 
       }
     }, 100);
     if (timerSubscription?.current) {
@@ -37,11 +39,31 @@ const useTimer = (initialTime: number) => {
 
   return {
     time,
+    isRunning: () => timer.isRunning(),
+    isPaused: () => timer.isPaused(),
+    isStarted: () => timer.isStarted(),
+    isStopped: () => timer.isStopped(),
     stop,
     start,
     pause: () => timer.pause(),
     resume: () => timer.resume()
   };
 };
+
+export interface TimerProps {
+  initialTime: number;
+}
+
+export interface Timer {
+  time: number;
+  start: () => void;
+  stop: () => void;
+  pause: () => NodeTimer;
+  resume: () => NodeTimer;
+  isRunning: () => boolean;
+  isPaused: () => boolean;
+  isStarted: () => boolean;
+  isStopped: () => boolean;
+}
 
 export default useTimer;
