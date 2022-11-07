@@ -4,15 +4,18 @@ import useTimer, { Timer } from "@hooks/useTimer";
 import DigitalTime from "./DigitalTime";
 import Container from "./Container";
 import useScreenOrientation from "@hooks/useScreenOrientation";
+import useSound from "@hooks/useSound";
 
 const ChessTimer: React.FC<{}> = () => {
   const playerOne = useTimer({ initialTime: 180000 });
   const playerTwo = useTimer({ initialTime: 180000 });
+  const { play: playSound } = useSound(require("@assets/sounds/switch.wav"));
   const { isPortrait } = useScreenOrientation();
 
   const onToggleTimer = (pressedTimer: Timer, otherTimer: Timer) => {
     pressedTimer.pause();
     otherTimer.isStarted() ? otherTimer.resume() : otherTimer.start();
+    playSound();
   };
 
   return (
