@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
 import useTimer, { Timer } from "@hooks/useTimer";
 import DigitalTime from "./DigitalTime";
@@ -7,15 +7,21 @@ import useScreenOrientation from "@hooks/useScreenOrientation";
 import useSound from "@hooks/useSound";
 
 const ChessTimer: React.FC<{}> = () => {
-  const playerOne = useTimer({ initialTime: 180000 });
-  const playerTwo = useTimer({ initialTime: 180000 });
+  const playerOne = useTimer({ initialTime: 180000, onTimerEnd: onTimerFinish });
+  const playerTwo = useTimer({ initialTime: 180000, onTimerEnd: onTimerFinish });
   const { play: playSound } = useSound(require("@assets/sounds/switch.wav"));
   const { isPortrait } = useScreenOrientation();
 
-  const onToggleTimer = (pressedTimer: Timer, otherTimer: Timer) => {
+  function onToggleTimer(pressedTimer: Timer, otherTimer: Timer) {
     pressedTimer.pause();
     otherTimer.isStarted() ? otherTimer.resume() : otherTimer.start();
     (pressedTimer.isPaused() || pressedTimer.isStopped()) && playSound();
+  }
+
+  function onTimerFinish() {
+    console.log('Timer finished!');
+    playerOne.stop();
+    playerTwo.stop();
   };
 
   return (

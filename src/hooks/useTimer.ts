@@ -11,7 +11,9 @@ const useTimer = ({ initialTime, onTimerEnd }: TimerProps): Timer => {
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    return () => stop();
+    return () => {
+      timer.clear()
+    };
   }, []);
 
   const start = () => {
@@ -39,7 +41,7 @@ const useTimer = ({ initialTime, onTimerEnd }: TimerProps): Timer => {
     if (timerSubscription?.current) {
       clearTimeout(timerSubscription.current);
     }
-    timer.stop()
+    timer.clear()
   };
 
   return {
