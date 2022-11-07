@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 
 import useTimer, { Timer } from "@hooks/useTimer";
 import DigitalTime from "./DigitalTime";
@@ -15,7 +15,7 @@ const ChessTimer: React.FC<{}> = () => {
   const onToggleTimer = (pressedTimer: Timer, otherTimer: Timer) => {
     pressedTimer.pause();
     otherTimer.isStarted() ? otherTimer.resume() : otherTimer.start();
-    playSound();
+    (pressedTimer.isPaused() || pressedTimer.isStopped()) && playSound();
   };
 
   return (
